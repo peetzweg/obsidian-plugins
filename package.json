@@ -2,6 +2,7 @@
   "name": "obsidian-plugins",
   "private": true,
   "scripts": {
+	"postinstall": "./scripts/install-plugins-to-vault.sh",
     "build": "turbo run build",
     "dev": "turbo run dev",
     "lint": "turbo run lint",
@@ -17,6 +18,7 @@
     "turbo": "^2.5.4",
     "typescript": "5.8.3",
     "vitest": "^3.2.4"
+
   },
   "packageManager": "pnpm@10.12.4",
   "engines": {

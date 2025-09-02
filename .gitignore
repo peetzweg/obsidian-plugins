@@ -23,3 +23,5 @@ data.json
 .DS_Store
 
 .turbo
+vault/*.md
+vault/.obsidian/workspace.json
