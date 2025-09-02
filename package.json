@@ -3,6 +3,7 @@
   "private": true,
   "scripts": {
 	"postinstall": "./scripts/install-plugins-to-vault.sh",
+	"install-plugins": "./scripts/install-plugins-to-vault.sh",
     "build": "turbo run build",
     "dev": "turbo run dev",
     "lint": "turbo run lint",
