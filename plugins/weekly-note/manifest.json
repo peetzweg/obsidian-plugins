@@ -1,0 +1,10 @@
+{
+	"id": "weekly-note",
+	"name": "Weekly Note",
+	"version": "1.0.0",
+	"minAppVersion": "0.15.0",
+	"description": "A simple plugin to quickly open or create weekly note files in Obsidian.",
+	"author": "",
+	"authorUrl": "",
+	"isDesktopOnly": false
+}
