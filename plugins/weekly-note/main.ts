@@ -17,9 +17,11 @@ function getCurrentWeekInfo() {
 
 // Template for new weekly note files
 function createWeeklyNoteTemplate(week: number, year: number): string {
-	return `
----
+	return `---
 up: "[[Weekly Todos]]"
+tags:
+  - todo
+  - weekly
 ---
 `;
 }
@@ -45,7 +47,7 @@ export default class WeeklyFilePlugin extends Plugin {
 			name: "Open current week file",
 			callback: async () => {
 				const { week, year } = getCurrentWeekInfo();
-				const filename = `${year}-week-${week}.md`;
+				const filename = `${year} Week ${week}.md`;
 
 				// Check if file exists
 				const existingFile =
