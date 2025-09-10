@@ -15,7 +15,6 @@ function getCurrentWeekInfo() {
 	};
 }
 
-// Template for new weekly note files
 function createWeeklyNoteTemplate(week: number, year: number): string {
 	return `---
 up: "[[Weekly Todos]]"
@@ -26,49 +25,65 @@ tags:
 `;
 }
 
+function createYearlyNoteTemplate(year: number): string {
+	return `---
+up: "[[Yearly Todos]]"
+tags:
+  - todo
+  - yearly
+---
+`;
+}
+
 // Helper function to position cursor at the bottom of the file
 function positionCursorAtBottom(app: App) {
 	// Get the active view
 	const activeView = app.workspace.getActiveViewOfType(MarkdownView);
 	if (activeView) {
 		const editor = activeView.editor;
-		// Get the last line number
 		const lastLine = editor.lastLine();
-		// Position cursor at the end of the last line
-		editor.setCursor(lastLine, editor.getLine(lastLine).length);
+		editor.setCursor(lastLine, editor.getLine(lastLine + 1).length);
 	}
 }
 
 export default class WeeklyFilePlugin extends Plugin {
+	openOrCreateFile = async (filename: string, template: string) => {
+		const existingFile = this.app.vault.getAbstractFileByPath(filename);
+		if (existingFile instanceof TFile) {
+			await this.app.workspace.getLeaf().openFile(existingFile);
+		} else {
+			const newFile = await this.app.vault.create(filename, template);
+			await this.app.workspace.getLeaf().openFile(newFile);
+		}
+	};
+
 	async onload() {
 		// Add command to open or create the current week file
 		this.addCommand({
+			id: "open-current-year-file",
+			name: "Open Yearly Todo File",
+			callback: async () => {
+				const { year } = getCurrentWeekInfo();
+				const filename = `${year} Todos.md`;
+
+				await this.openOrCreateFile(
+					filename,
+					createYearlyNoteTemplate(year),
+				);
+			},
+		});
+
+		this.addCommand({
 			id: "open-current-week-file",
-			name: "Open current week file",
+			name: "Open Weekly Todo File",
 			callback: async () => {
 				const { week, year } = getCurrentWeekInfo();
 				const filename = `${year} Week ${week}.md`;
 
-				// Check if file exists
-				const existingFile =
-					this.app.vault.getAbstractFileByPath(filename);
-
-				if (existingFile instanceof TFile) {
-					// File exists, open it
-					await this.app.workspace.getLeaf().openFile(existingFile);
-				} else {
-					// File doesn't exist, create it
-					const newFile = await this.app.vault.create(
-						filename,
-						createWeeklyNoteTemplate(week, year),
-					);
-					await this.app.workspace.getLeaf().openFile(newFile);
-				}
-
-				// Position cursor at bottom after file is opened
-				setTimeout(() => {
-					positionCursorAtBottom(this.app);
-				}, 100);
+				await this.openOrCreateFile(
+					filename,
+					createWeeklyNoteTemplate(week, year),
+				);
 			},
 		});
 	}
