@@ -10,8 +10,8 @@ if [ -n "$1" ]; then
 	vault_dir=$(realpath "$1")
 	echo "Using vault directory: $vault_dir"
 else
-	vault_dir="$current_dir/vault"
-	echo "Using default vault directory: $vault_dir"
+	echo "No vault directory provided"
+	exit 1
 fi
 
 vault_plugin_dir="$vault_dir/.obsidian/plugins"
@@ -20,5 +20,5 @@ for plugin in "$plugins_dir"/*; do
 	if [ -e "$vault_plugin_dir/$(basename "$plugin")" ] || [ -L "$vault_plugin_dir/$(basename "$plugin")" ]; then
 		rm -rf "$vault_plugin_dir/$(basename "$plugin")"
 	fi
-	ln -s "$plugin" "$vault_plugin_dir/"
+	cp -r "$plugin" "$vault_plugin_dir/"
 done

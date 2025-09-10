@@ -2,8 +2,8 @@
   "name": "obsidian-plugins",
   "private": true,
   "scripts": {
-	"postinstall": "./scripts/install-plugins-to-vault.sh",
-	"install-plugins": "./scripts/install-plugins-to-vault.sh",
+	"postinstall": "./scripts/install-plugin-links.sh ./vault",
+	"install-plugins": "./scripts/install-plugins.sh",
     "build": "turbo run build",
     "dev": "turbo run dev",
     "lint": "turbo run lint",
