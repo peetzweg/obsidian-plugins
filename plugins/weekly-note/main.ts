@@ -1,4 +1,4 @@
-import { Plugin, TFile, MarkdownView, App } from "obsidian";
+import { Plugin, TFile, MarkdownView, App, Notice } from "obsidian";
 
 // Helper function to get current week number and year
 function getCurrentWeekInfo() {
@@ -46,6 +46,64 @@ function positionCursorAtBottom(app: App) {
 	}
 }
 
+// Helper function to sort bullet point lists
+function sortBulletPointList(text: string): string {
+	const lines = text.split("\n");
+	const bulletRegex = /^(\s*)([-+*])(\s+)(.*)$/;
+
+	const bulletLines: Array<{
+		original: string;
+		indent: string;
+		bullet: string;
+		spacing: string;
+		content: string;
+		isStrikethrough: boolean;
+	}> = [];
+
+	const nonBulletLines: string[] = [];
+
+	// Parse each line
+	for (const line of lines) {
+		const match = line.match(bulletRegex);
+		if (match) {
+			const [, indent, bullet, spacing, content] = match;
+			const isStrikethrough = content.includes("~~");
+			bulletLines.push({
+				original: line,
+				indent,
+				bullet,
+				spacing,
+				content,
+				isStrikethrough,
+			});
+		} else {
+			nonBulletLines.push(line);
+		}
+	}
+
+	// If no bullet points found, return original text
+	if (bulletLines.length === 0) {
+		return text;
+	}
+
+	// Sort: non-strikethrough first, then strikethrough
+	const regularItems = bulletLines.filter((item) => !item.isStrikethrough);
+	const strikethroughItems = bulletLines.filter(
+		(item) => item.isStrikethrough,
+	);
+
+	const sortedBulletLines = [...regularItems, ...strikethroughItems];
+
+	// Reconstruct the lines
+	const result = sortedBulletLines.map(
+		(item) => `${item.indent}${item.bullet}${item.spacing}${item.content}`,
+	);
+
+	// If there were non-bullet lines, we need to be more careful about reconstruction
+	// For now, just return the sorted bullet points
+	return result.join("\n");
+}
+
 export default class WeeklyFilePlugin extends Plugin {
 	openOrCreateFile = async (filename: string, template: string) => {
 		const existingFile = this.app.vault.getAbstractFileByPath(filename);
@@ -84,6 +142,32 @@ export default class WeeklyFilePlugin extends Plugin {
 					filename,
 					createWeeklyNoteTemplate(week, year),
 				);
+			},
+		});
+
+		this.addCommand({
+			id: "sort-bullet-list",
+			name: "Sort Bullet Point List (Completed Items to Bottom)",
+			callback: () => {
+				const activeView =
+					this.app.workspace.getActiveViewOfType(MarkdownView);
+				if (!activeView) {
+					return;
+				}
+
+				const editor = activeView.editor;
+				const selectedText = editor.getSelection();
+
+				if (!selectedText) {
+					// If no selection, show a notice
+					new Notice("Please select a bullet point list to sort");
+					return;
+				}
+
+				const sortedText = sortBulletPointList(selectedText);
+
+				// Replace the selected text with the sorted version
+				editor.replaceSelection(sortedText);
 			},
 		});
 	}
