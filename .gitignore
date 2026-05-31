@@ -22,6 +22,6 @@ data.json
 # Exclude macOS Finder (System Explorer) View States
 .DS_Store
 
-.turbo
 vault/*.md
 vault/.obsidian/workspace.json
+vault/.obsidian/plugins/personal-toolkit
