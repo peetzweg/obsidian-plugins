@@ -25,3 +25,7 @@ data.json
 vault/*.md
 vault/.obsidian/workspace.json
 vault/.obsidian/plugins/personal-toolkit
+
+# Coverage output (thresholds live in vitest.config.ts and are committed)
+coverage
+coverage-output.txt

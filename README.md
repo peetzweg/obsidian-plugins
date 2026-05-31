@@ -18,6 +18,7 @@ Filenames and templates are configurable in the plugin's settings tab.
 pnpm install        # install dependencies
 pnpm dev            # watch-build main.js
 pnpm test           # run unit tests (vitest)
+pnpm test:coverage  # run tests + enforce coverage thresholds
 pnpm lint           # eslint
 pnpm check-types    # tsc --noEmit
 pnpm build          # production build (type-check + minified main.js)
