@@ -39,16 +39,17 @@ export function sortStruckBulletsLast(text: string): string {
 	}
 
 	const minIndent = Math.min(...bulletIndents);
-	const isTopBullet = (line: string) => indentOf(line) === minIndent;
 
 	const preamble: string[] = [];
 	const groups: Group[] = [];
 	let current: Group | null = null;
 
 	for (const line of lines) {
-		if (isTopBullet(line)) {
-			const content = line.match(BULLET_RE)?.[4] ?? "";
-			current = { lines: [line], struck: content.includes("~~") };
+		const match = line.match(BULLET_RE);
+		// A top-level bullet starts a new group; deeper bullets and non-bullet
+		// lines are absorbed into the current group as children/continuation.
+		if (match && match[1].length === minIndent) {
+			current = { lines: [line], struck: match[4].includes("~~") };
 			groups.push(current);
 		} else if (current) {
 			current.lines.push(line);

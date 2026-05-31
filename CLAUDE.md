@@ -26,6 +26,11 @@ plugins. See `docs/ARCHITECTURE.md`.
   unit-testable; `index.ts` is thin wiring only.
 - **Tests** live next to the code as `*.test.ts` (vitest). Never import
   `obsidian` from a tested file.
+- **Coverage is ratcheted.** `vitest.config.ts` enforces `perFile` thresholds
+  (currently 100%) on the measured logic files; Obsidian-wiring files are
+  excluded. Thresholds `autoUpdate` upward and are committed, so coverage can
+  only improve. CI runs `pnpm test:coverage` and fails on any drop. Every new
+  feature's logic file must be covered.
 - **Indentation is tabs, width 4** (`.editorconfig` / `.prettierrc`).
 - Add a feature by following `docs/ADDING_A_FEATURE.md`.
 

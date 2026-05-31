@@ -25,6 +25,24 @@ jobs:
 
       - run: pnpm check-types
 
-      - run: pnpm test
+      # Runs tests AND enforces coverage thresholds (perFile, committed in
+      # vitest.config.ts). A drop in coverage fails the job. pipefail ensures a
+      # test/threshold failure isn't swallowed by the `tee` pipe.
+      - name: Test with coverage
+        shell: bash
+        run: |
+          set -o pipefail
+          pnpm test:coverage 2>&1 | tee coverage-output.txt
+
+      - name: Coverage summary
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo '## Coverage'
+            echo '```'
+            sed -n '/Coverage report/,/====/p' coverage-output.txt
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
 
       - run: pnpm build

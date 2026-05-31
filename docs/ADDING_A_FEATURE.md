@@ -42,6 +42,12 @@ describe("transform", () => {
 
 Run `pnpm test` (or `pnpm test:watch`).
 
+> **Coverage is enforced.** `pnpm test:coverage` checks per-file thresholds
+> (currently 100%) on logic files and CI fails on any drop, so your new logic
+> file needs full test coverage. Thresholds in `vitest.config.ts` auto-raise and
+> are committed — coverage only ever ratchets up. (Obsidian-wiring files like
+> `index.ts` are excluded from coverage; see `docs/ARCHITECTURE.md`.)
+
 ## 4. Wire it up
 
 `index.ts` stays thin — it connects Obsidian to your logic:

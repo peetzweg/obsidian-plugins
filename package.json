@@ -16,20 +16,27 @@
     "install-plugin": "pnpm build && ./scripts/install-plugin.sh",
     "changeset": "changeset",
     "version": "changeset version && node version-bump.mjs",
-    "release": "pnpm build"
+    "release": "pnpm build",
+    "test:coverage": "vitest run --coverage"
   },
-  "keywords": ["obsidian", "obsidian-plugin"],
+  "keywords": [
+    "obsidian",
+    "obsidian-plugin"
+  ],
   "license": "MIT",
   "packageManager": "pnpm@10.12.4",
   "engines": {
     "node": ">=20"
   },
   "pnpm": {
-    "onlyBuiltDependencies": ["esbuild"]
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
   },
   "devDependencies": {
     "@changesets/cli": "^2.29.4",
     "@types/node": "^20.14.0",
+    "@vitest/coverage-v8": "^3.2.4",
     "builtin-modules": "^3.3.0",
     "esbuild": "^0.25.0",
     "eslint": "^9.9.0",
