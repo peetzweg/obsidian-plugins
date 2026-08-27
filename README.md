@@ -7,6 +7,7 @@ one plugin; get all the features. Designed to be easy to extend.
 
 - **Weekly Todo** — open/create the current ISO-week todo note from a template.
 - **Yearly Todo** — open/create the current year's todo note from a template.
+- **Fixed Files** — open Homework for Life or Crash & Burn with dedicated commands.
 - **Sort Bullets** — move completed (`~~struck~~`) bullets to the bottom of a
   selection, preserving nesting and surrounding text.
 

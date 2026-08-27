@@ -1,4 +1,5 @@
 import type { Feature } from "./feature";
+import { fixedFilesFeature } from "./fixed-files";
 import { sortBulletsFeature } from "./sort-bullets";
 import { weeklyTodoFeature } from "./weekly-todo";
 import { yearlyTodoFeature } from "./yearly-todo";
@@ -10,6 +11,7 @@ import { yearlyTodoFeature } from "./yearly-todo";
  * load/unload and the settings tab automatically.
  */
 export const FEATURES: Feature[] = [
+	fixedFilesFeature,
 	weeklyTodoFeature,
 	yearlyTodoFeature,
 	sortBulletsFeature,
